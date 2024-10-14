@@ -1,0 +1,9 @@
+## Title: Near's Daily Info
+## APIVersion: 101041
+## Version: 1
+## AddOnVersion: 1
+## SavedVariables: NearDailyInfo_Data
+## Author: |cCC99FFnotnear|r
+
+config.lua
+NearDailyInfo.lua

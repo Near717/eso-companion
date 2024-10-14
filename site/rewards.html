@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>ESO Companion</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<link rel="icon" href="images/favicon.png" type="image/x-icon">
+</head>
+
+<body class="is-preload">
+	<div id="page-wrapper">
+
+		<!-- Header -->
+		<header id="header">
+			<div class="logo container">
+				<div>
+					<h1><a href="index.html" id="logo">ESO Companion</a></h1>
+					<p>Keeping track of dailies because bad memory</p>
+				</div>
+			</div>
+		</header>
+
+		<!-- Nav -->
+		<nav id="nav">
+			<ul>
+				<li><a href="index.html">Home</a></li>
+				<li><a href="endeavor.html">Endeavors</a></li>
+				<li><a href="riding.html">Riding Training</a></li>
+				<li class="current"><a href="rewards.html">Daily login rewards</a></li>
+			</ul>
+		</nav>
+
+		<!-- Main -->
+		<section id="main">
+			<div class="container">
+				<div class="row">
+					<div class="col-12">
+						<div class="content">
+
+							<!-- Content -->
+							<article class="box page-content">
+
+								<header>
+									<h2>Daily login rewards</h2>
+								</header>
+
+								<section id="account-containers"></section>
+
+							</article>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Footer -->
+		<div id="footer"></div>
+
+	</div>
+
+	<!-- Scripts -->
+	<script>
+		function loadContent() {
+			// Load footer
+			fetch('footer.html')
+				.then(response => response.text())
+				.then(data => {
+					document.getElementById('footer').innerHTML = data;
+				})
+				.catch(error => console.error('Error loading the footer:', error));
+		}
+
+		window.onload = loadContent;
+	</script>
+
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.dropotron.min.js"></script>
+	<script src="assets/js/jquery.scrolly.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+
+	<style>
+		.complete {
+			color: green;
+		}
+
+		.progress-75 {
+			color: yellow;
+		}
+
+		.progress-50 {
+			color: orange;
+		}
+
+		.progress-25 {
+			color: red;
+		}
+	</style>
+
+	<script type="module">
+		import { isUpdated, formatTimestamp } from './src/functions.js';
+		import { server, userId, scope } from './src/config.js';
+
+		// Fetch JSON data from output.json
+		fetch('data/output.json')
+			.then(response => response.json())
+			.then(jsonData => {
+
+				// Get data
+				const data = jsonData[server];
+
+				// Function to create container and labels
+				function createElements() {
+					// Loop through each account in the data object
+					Object.keys(data).forEach((id, accountIndex) => {
+						const accountData = data[id].$AccountWide.account.dailyReward;
+						const claimed = accountData.claimed;
+
+						// Container to hold the accounts's data
+						const container = document.createElement('div');
+						container.classList.add(`account-${accountIndex}`);
+
+						// Construct label text with progression information
+						let labelText;
+						if (isUpdated(accountData) && claimed) {
+							labelText = `${id}: claimed`;
+						} else {
+							labelText = `<span style="color: red;">${id}: not claimed</span>`;
+						}
+
+						let time = formatTimestamp("%m/%d %H:%M", accountData.lastUpdated)
+
+						// Append last updated information to label text
+						labelText = `(Updated: ${time}) ${labelText}`;
+
+						// Label for account progression
+						const label = document.createElement('label');
+						label.innerHTML = labelText;
+
+						container.appendChild(label);
+						container.appendChild(document.createElement('br'));
+
+						// Append container to the section
+						document.getElementById('account-containers').appendChild(container);
+					});
+				}
+
+				// Create elements for each account
+				createElements();
+
+			})
+			.catch(error => console.error(error));
+	</script>
+
+</body>
+
+</html>

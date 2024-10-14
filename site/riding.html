@@ -1,0 +1,149 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>ESO Companion</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<link rel="icon" href="images/favicon.png" type="image/x-icon">
+</head>
+
+<body class="is-preload">
+	<div id="page-wrapper">
+
+		<!-- Header -->
+		<header id="header">
+			<div class="logo container">
+				<div>
+					<h1><a href="index.html" id="logo">ESO Companion</a></h1>
+					<p>Keeping track of dailies because bad memory</p>
+				</div>
+			</div>
+		</header>
+
+		<!-- Nav -->
+		<nav id="nav">
+			<ul>
+				<li><a href="index.html">Home</a></li>
+				<li><a href="endeavor.html">Endeavors</a></li>
+				<li class="current"><a href="riding.html">Riding Training</a></li>
+				<li><a href="rewards.html">Daily login rewards</a></li>
+			</ul>
+		</nav>
+
+		<!-- Main -->
+		<section id="main">
+			<div class="container">
+				<div class="row">
+					<div class="col-12">
+						<div class="content">
+
+							<!-- Content -->
+
+							<article class="box page-content">
+
+								<header>
+									<h2>Riding training</h2>
+								</header>
+
+								<section id="character-containers"></section>
+
+							</article>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Footer -->
+		<div id="footer"></div>
+
+	</div>
+
+	<!-- Scripts -->
+	<script>
+		function loadContent() {
+			// Load footer
+			fetch('footer.html')
+				.then(response => response.text())
+				.then(data => {
+					document.getElementById('footer').innerHTML = data;
+				})
+				.catch(error => console.error('Error loading the footer:', error));
+		}
+
+		window.onload = loadContent;
+	</script>
+
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.dropotron.min.js"></script>
+	<script src="assets/js/jquery.scrolly.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+
+	<script type="module">
+		import { isUpdated, formatTimestamp } from './src/functions.js';
+		import { server, userId, scope } from './src/config.js';
+
+		// Fetch JSON data from output.json
+		fetch('data/output.json')
+			.then(response => response.json())
+			.then(jsonData => {
+
+				// Get the charInfo and char data from the JSON data
+				// const charInfo = jsonData.data.account.charInfo;
+				// const char = jsonData.data.char;
+				const charInfo = jsonData[server][userId][scope].account.charInfo;
+				const char = jsonData[server][userId][scope].char;
+
+				// Function to create container and labels
+				function createElements() {
+					// Loop through each character in charInfo
+					charInfo.forEach((character, charIndex) => {
+						const charId = charInfo[charIndex].charId;
+						const charName = charInfo[charIndex].charName;
+						const charData = char[charId];
+
+						// Container to hold the character's data
+						const container = document.createElement('div');
+						container.classList.add(`char-${charIndex}`);
+
+						// Construct label text with progression information
+						let labelText;
+						if (isUpdated(charData) && charData.riding === 'done' || charData.riding === '-') {
+							labelText = `${charName}: ${charData.riding}`;
+						} else {
+							labelText = `<span style="color: red;">${charName}: not done</span>`;
+						}
+
+						let time = formatTimestamp("%m/%d %H:%M", charData.lastUpdated)
+
+						// Append last updated information to label text
+						labelText = `(Updated: ${time}) ${labelText}`;
+
+						// Label for character progression
+						const label = document.createElement('label');
+						label.innerHTML = labelText;
+
+						container.appendChild(label);
+						container.appendChild(document.createElement('br'));
+
+						// Append container to the section
+						document.getElementById('character-containers').appendChild(container);
+					});
+				}
+
+				// Create elements for each character
+				createElements();
+
+			})
+			.catch(error => console.error(error));
+	</script>
+
+</body>
+
+</html>

@@ -1,0 +1,6 @@
+.vscode
+site/node_modules
+site/package*
+site/eslint*
+site/data/data.lua
+site/data/output.json
