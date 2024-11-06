@@ -3,6 +3,7 @@
 #Include WatchFolder.ahk
 #SingleInstance Force
 Persistent
+TraySetIcon(A_WorkingDir . "\nexus.ico")
 
 WatchedFile := A_MyDocuments . "\Elder Scrolls Online\live\SavedVariables\NearDailyInfo.lua"
 WatchedFolder := A_MyDocuments . "\Elder Scrolls Online\live\SavedVariables"
