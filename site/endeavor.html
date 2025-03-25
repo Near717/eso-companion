@@ -69,7 +69,6 @@
 
 		<!-- Footer -->
 		<div id="footer"></div>
-
 	</div>
 
 	<!-- Scripts -->
@@ -119,7 +118,6 @@
 
 		// Function to create and append labels for endeavors
 		function createEndeavorElements(data, endeavors, container, weekly) {
-
 			// Loop through the endeavors and create labels
 			endeavors.forEach((endeavor) => {
 				const label = document.createElement('label');
@@ -147,7 +145,6 @@
 				container.appendChild(label);
 				container.appendChild(document.createElement('br'));
 			});
-
 		}
 
 		// Fetch JSON data from output.json
@@ -175,7 +172,5 @@
 			})
 			.catch(error => console.error(error));
 	</script>
-
 </body>
-
 </html>

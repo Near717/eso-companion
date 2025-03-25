@@ -41,13 +41,10 @@
 
 							<!-- Content -->
 							<article class="box page-content">
-
 								<header>
 									<h2>Daily login rewards</h2>
 								</header>
-
 								<section id="account-containers"></section>
-
 							</article>
 
 						</div>
@@ -58,7 +55,6 @@
 
 		<!-- Footer -->
 		<div id="footer"></div>
-
 	</div>
 
 	<!-- Scripts -->
@@ -110,8 +106,6 @@
 		fetch('data/output.json')
 			.then(response => response.json())
 			.then(jsonData => {
-
-				// Get data
 				const data = jsonData[server];
 
 				// Function to create container and labels
@@ -152,11 +146,8 @@
 
 				// Create elements for each account
 				createElements();
-
 			})
 			.catch(error => console.error(error));
 	</script>
-
 </body>
-
 </html>

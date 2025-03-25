@@ -83,15 +83,13 @@ export function isUpdated(data, weekly) {
  * @param {Object} data - The data object containing the last updated timestamp.
  */
 export function createLastUpdated(element, format, data) {
-	// Build string
 	let time = formatTimestamp(format, data.lastUpdated)
 	const lastUpdatedText = `Last updated at: ${time}`;
 
-	// Update with the last updated time
 	const lastUpdatedElement = document.getElementById(element);
 	lastUpdatedElement.innerText = lastUpdatedText;
 	if (!isUpdated(data)) {
-		lastUpdatedElement.style.color = 'red'; // Style the label color to red
+		lastUpdatedElement.style.color = 'red';
 	}
 }
 
@@ -99,7 +97,6 @@ export function createLastUpdated(element, format, data) {
 /* index.html */
 
 export function buildEndeavor(jsonData) {
-	// const data = jsonData.data.account
 	const data = jsonData[server][userId][scope].account;
 
 	const format = '%m/%d %H:%M';
@@ -108,7 +105,6 @@ export function buildEndeavor(jsonData) {
 
 	const endeavorContainer = document.getElementById('endeavor_container');
 
-	// Function to create and append label with text and color
 	function createLabel(text) {
 		const label = document.createElement('label');
 		label.innerHTML = text;
@@ -144,52 +140,43 @@ export function buildEndeavor(jsonData) {
 }
 
 export function buildRiding(jsonData) {
-	// Get character data
-	// const charInfo = jsonData.data.account.charInfo;
-	// const char = jsonData.data.char;
 	const charInfo = jsonData[server][userId][scope].account.charInfo;
 	const char = jsonData[server][userId][scope].char;
 
+	let allComplete = true;
 
-	let ridingComplete = false; // Flag to track if riding is not done for any character
-
-	// Loop through character data to add labels for characters with riding not done
 	charInfo.forEach((character) => {
 		const charId = character.charId;
 		const charName = character.charName;
 		const charData = char[charId];
+		const updated = isUpdated(charData);
 
-		// If riding is not done, add label to the riding_container
-		if (!isUpdated(charData) && charData.riding !== '-') {
+		if (!updated && charData.riding !== '-') {
 			const label = document.createElement('label');
 			label.textContent = `${charName}`;
-			label.style.color = 'red'; // Style the label color to red
+			label.style.color = 'red';
 			document.getElementById('riding_container').appendChild(label);
 			document.getElementById('riding_container').appendChild(document.createElement('br'));
-			ridingComplete = true; // Set flag to true if riding is not done
+			allComplete = false;
 		}
 	});
 
-	// If riding is not done for any character, add a "Complete" label
-	if (!ridingComplete) {
+	if (allComplete) {
 		const label = document.createElement('label');
 		label.textContent = 'Complete';
 		label.style.color = 'green';
 		document.getElementById('riding_container').appendChild(label);
 		document.getElementById('riding_container').appendChild(document.createElement('br'));
 	}
-
 }
 
 export function buildRewards(jsonData) {
-	// Get data
 	const data = jsonData[server];
 
 	let allClaimed = true;
 	const rewardsContainer = document.getElementById('rewards_container');
 	rewardsContainer.innerHTML = '';
 
-	// Loop through each account in the data object
 	Object.keys(data).forEach((id) => {
 		const accountData = data[id].$AccountWide.account.dailyReward;
 		const claimed = accountData.claimed;
@@ -206,7 +193,6 @@ export function buildRewards(jsonData) {
 		}
 	});
 
-	// If reward is claimed for every account, add a "Complete" label
 	if (allClaimed) {
 		rewardsContainer.innerHTML = '';
 		const label = document.createElement('label');
@@ -216,24 +202,3 @@ export function buildRewards(jsonData) {
 		rewardsContainer.appendChild(document.createElement('br'));
 	}
 }
-
-
-/* // Create the ul element with its child li element
-const lastUpdatedElement = document.createElement('ul');
-lastUpdatedElement.classList.add('meta');
-
-const lastUpdatedListItem = document.createElement('li');
-lastUpdatedListItem.classList.add('icon', 'fa-clock');
-lastUpdatedListItem.id = 'last_updated_endeavor';
-
-// Append the li element to the ul element
-lastUpdatedElement.appendChild(lastUpdatedListItem);
-
-// Get the last updated time from the JSON data
-const lastUpdatedText = `Last updated at: ${jsonData[server][userId][scope].account.lastUpdated}`;
-
-// Update with the last updated time
-lastUpdatedListItem.textContent = lastUpdatedText;
-
-// Append the ul element to its parent element
-endeavorContainer.appendChild(lastUpdatedElement); */

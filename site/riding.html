@@ -40,15 +40,11 @@
 						<div class="content">
 
 							<!-- Content -->
-
 							<article class="box page-content">
-
 								<header>
 									<h2>Riding training</h2>
 								</header>
-
 								<section id="character-containers"></section>
-
 							</article>
 
 						</div>
@@ -59,7 +55,6 @@
 
 		<!-- Footer -->
 		<div id="footer"></div>
-
 	</div>
 
 	<!-- Scripts -->
@@ -93,10 +88,6 @@
 		fetch('data/output.json')
 			.then(response => response.json())
 			.then(jsonData => {
-
-				// Get the charInfo and char data from the JSON data
-				// const charInfo = jsonData.data.account.charInfo;
-				// const char = jsonData.data.char;
 				const charInfo = jsonData[server][userId][scope].account.charInfo;
 				const char = jsonData[server][userId][scope].char;
 
@@ -132,18 +123,14 @@
 						container.appendChild(label);
 						container.appendChild(document.createElement('br'));
 
-						// Append container to the section
 						document.getElementById('character-containers').appendChild(container);
 					});
 				}
 
 				// Create elements for each character
 				createElements();
-
 			})
 			.catch(error => console.error(error));
 	</script>
-
 </body>
-
 </html>
