@@ -185,33 +185,36 @@ export function buildRewards(jsonData) {
 	// Get data
 	const data = jsonData[server];
 
-	let rewardsComplete = false; // Flag to track if reward is claimed for every account
-	
+	let allClaimed = true;
+	const rewardsContainer = document.getElementById('rewards_container');
+	rewardsContainer.innerHTML = '';
+
 	// Loop through each account in the data object
 	Object.keys(data).forEach((id) => {
 		const accountData = data[id].$AccountWide.account.dailyReward;
 		const claimed = accountData.claimed;
+		const updated = isUpdated(accountData);
 
-		// If reward is not claimed, add label to the rewards_container
-		if (!isUpdated(accountData) || !claimed) {
-			const label = document.createElement('label');
-			label.textContent = `${id}`;
-			label.style.color = 'red'; // Style the label color to red
-			document.getElementById('rewards_container').appendChild(label);
-			document.getElementById('rewards_container').appendChild(document.createElement('br'));
-			rewardsComplete = true; // Set flag to true if reward is not claimed
+		const label = document.createElement('label');
+		label.textContent = `${id}`;
+		label.style.color = (!updated || !claimed) ? 'red' : 'green';
+		rewardsContainer.appendChild(label);
+		rewardsContainer.appendChild(document.createElement('br'));
+
+		if (!updated || !claimed) {
+			allClaimed = false;
 		}
 	});
 
 	// If reward is claimed for every account, add a "Complete" label
-	if (!rewardsComplete) {
+	if (allClaimed) {
+		rewardsContainer.innerHTML = '';
 		const label = document.createElement('label');
 		label.textContent = 'Complete';
 		label.style.color = 'green';
-		document.getElementById('rewards_container').appendChild(label);
-		document.getElementById('rewards_container').appendChild(document.createElement('br'));
+		rewardsContainer.appendChild(label);
+		rewardsContainer.appendChild(document.createElement('br'));
 	}
-
 }
 
 
