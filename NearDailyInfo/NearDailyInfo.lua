@@ -160,9 +160,17 @@ local function OnEndeavorProgressUpdated(_, index, previousProgress, currentProg
 	updateLastUpdated(sv)
 end
 
-function OnTimedActivityReset()
+local function OnTimedActivityReset()
 	zo_callLater(updateTimedActivityData, 1000)
 	zo_callLater(updateRidingData, 1000)
+end
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Time played
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+local function OnLogOut()
+	NEAR_DI.ASV.char.played = GetSecondsPlayed()
 end
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -186,6 +194,8 @@ local function OnAddonLoaded(event, name)
 		EVENT_MANAGER:RegisterForEvent(addon.name, EVENT_TIMED_ACTIVITY_SYSTEM_STATUS_UPDATED, OnTimedActivityReset)
 		EVENT_MANAGER:RegisterForEvent(addon.name, EVENT_TIMED_ACTIVITY_PROGRESS_UPDATED, OnEndeavorProgressUpdated)
 		-- EVENT_MANAGER:RegisterForEvent(addon.name, EVENT_TIMED_ACTIVITIES_UPDATED, RefreshAll)
+		ZO_PreHook('Logout', OnLogOut)
+		ZO_PreHook('Quit', OnLogOut)
 	else
 		addon.ASV.account = ZO_SavedVars:NewAccountWide(addon.name .. "_Data", 1, "account", defaults.lite.account, GetWorldName())
 	end

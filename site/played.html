@@ -28,8 +28,8 @@
 				<li><a href="index.html">Home</a></li>
 				<li><a href="endeavor.html">Endeavors</a></li>
 				<li><a href="riding.html">Riding Training</a></li>
-				<li class="current"><a href="rewards.html">Daily login rewards</a></li>
-				<li><a href="played.html">Play time</a></li>
+				<li><a href="rewards.html">Daily login rewards</a></li>
+				<li class="current"><a href="played.html">Play time</a></li>
 			</ul>
 		</nav>
 
@@ -43,9 +43,9 @@
 							<!-- Content -->
 							<article class="box page-content">
 								<header>
-									<h2>Daily login rewards</h2>
+									<h2>Play time</h2>
 								</header>
-								<section id="account-containers"></section>
+								<section id="character-containers"></section>
 							</article>
 
 						</div>
@@ -81,24 +81,6 @@
 	<script src="assets/js/util.js"></script>
 	<script src="assets/js/main.js"></script>
 
-	<style>
-		.complete {
-			color: green;
-		}
-
-		.progress-75 {
-			color: yellow;
-		}
-
-		.progress-50 {
-			color: orange;
-		}
-
-		.progress-25 {
-			color: red;
-		}
-	</style>
-
 	<script type="module">
 		import { isUpdated, formatTimestamp } from './src/functions.js';
 		import { server, userId, scope } from './src/config.js';
@@ -107,45 +89,62 @@
 		fetch('data/output.json')
 			.then(response => response.json())
 			.then(jsonData => {
-				const data = jsonData[server];
+				const charInfo = jsonData[server][userId][scope].account.charInfo;
+				const char = jsonData[server][userId][scope].char;
+
+				function formatPlaytime(seconds) {
+					const minutes = seconds / 60;
+					const hours = seconds / 3600;
+
+					if (seconds < 60) {
+						return '1 minute';
+					} else if (seconds < 7200) {
+						return `${Math.round(minutes)} minutes`;
+					} else if (hours < 1000) {
+						return `${hours.toFixed(1)} hours`;
+					} else {
+						return `${Math.floor(hours)} hours`;
+					}
+				}
 
 				// Function to create container and labels
 				function createElements() {
-					// Loop through each account in the data object
-					Object.keys(data).forEach((id, accountIndex) => {
-						const accountData = data[id].$AccountWide.account.dailyReward;
-						const claimed = accountData.claimed;
+					// Loop through each character in charInfo
+					charInfo.forEach((character, charIndex) => {
+						const charId = charInfo[charIndex].charId;
+						const charName = charInfo[charIndex].charName;
+						const charData = char[charId];
 
-						// Container to hold the accounts's data
+						// Container to hold the character's data
 						const container = document.createElement('div');
-						container.classList.add(`account-${accountIndex}`);
+						container.classList.add(`char-${charIndex}`);
 
 						// Construct label text with progression information
 						let labelText;
-						if (isUpdated(accountData) && claimed) {
-							labelText = `${id}: claimed`;
+						if (isUpdated(charData) && charData.played) {
+							const played = formatPlaytime(charData.played);
+							labelText = `${charName}: ${played}`;
 						} else {
-							labelText = `<span style="color: red;">${id}: not claimed</span>`;
+							labelText = `<span style="color: red;">${charName}: NA</span>`;
 						}
 
-						let time = formatTimestamp("%m/%d %H:%M", accountData.lastUpdated)
+						let time = formatTimestamp("%m/%d %H:%M", charData.lastUpdated)
 
 						// Append last updated information to label text
 						labelText = `(Updated: ${time}) ${labelText}`;
 
-						// Label for account progression
+						// Label for character progression
 						const label = document.createElement('label');
 						label.innerHTML = labelText;
 
 						container.appendChild(label);
 						container.appendChild(document.createElement('br'));
 
-						// Append container to the section
-						document.getElementById('account-containers').appendChild(container);
+						document.getElementById('character-containers').appendChild(container);
 					});
 				}
 
-				// Create elements for each account
+				// Create elements for each character
 				createElements();
 			})
 			.catch(error => console.error(error));
