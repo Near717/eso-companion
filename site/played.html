@@ -121,7 +121,7 @@
 
 						// Construct label text with progression information
 						let labelText;
-						if (isUpdated(charData) && charData.played) {
+						if (charData.played) {
 							const played = formatPlaytime(charData.played);
 							labelText = `${charName}: ${played}`;
 						} else {
