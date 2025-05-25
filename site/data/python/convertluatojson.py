@@ -5,7 +5,7 @@ from lupa import LuaRuntime
 lua = LuaRuntime(unpack_returned_tuples=True)
 
 # Load the Lua file
-with open("../data.lua", "r") as file:
+with open("../data.lua", "r", encoding='utf-8') as file:
 	lua_code = file.read()
 
 # Execute the Lua code
@@ -37,16 +37,17 @@ python_data = lua_table_to_dict(NearDailyInfo_Data)
 
 # Write to output.json
 def write(dictionary):
-	with open('../output.json', 'w') as file:
+	with open('../output.json', 'w', encoding='utf-8') as file:
 		# json.dump(dictionary, file, indent=4)
-		json.dump(dictionary, file, indent=None, separators=(',', ':'))
+		json.dump(dictionary, file, ensure_ascii=False, indent=None, separators=(',', ':'))
 
 # Read from output.json
 def read():
 	try:
-		with open('../output.json', 'r') as file:
+		with open('../output.json', 'r', encoding='utf-8') as file:
 			return json.load(file)
-	except FileNotFoundError:
+	except (FileNotFoundError, json.JSONDecodeError) as e:
+		print(f'Warning: Could not load JSON - {e}')
 		return {}
 
 # Main
