@@ -4,15 +4,6 @@
 
 ESO Companion is a tool for converting data related to Elder Scrolls Online.
 
-## Converter in Lua Dependencies
-
-- [Lua](https://www.lua.org/download.html)
-- [lua-cjson](https://luarocks.org/modules/openresty/lua-cjson)
-
-### Windows
-
-Install Lua and lua-cjson on Windows Subsystem for Linux.
-
 ## Converter in Python Dependencies
 
 - [Python](https://www.python.org/downloads/)
@@ -20,7 +11,7 @@ Install Lua and lua-cjson on Windows Subsystem for Linux.
 
 ## Run Locally
 
-You can use either [http-server](https://www.npmjs.com/package/http-server) or [live-server](https://www.npmjs.com/package/live-server) to run the application locally.
+You can use [http-server](https://www.npmjs.com/package/http-server) or [live-server](https://www.npmjs.com/package/live-server) to run the application locally.
 
 ## Setup Instructions
 
@@ -36,3 +27,12 @@ You can use either [http-server](https://www.npmjs.com/package/http-server) or [
 
 4. **Running the Application**:
    - Run `start.bat` to initiate the application.
+
+## ~~Converter in Lua Dependencies~~
+
+- ~~[Lua](https://www.lua.org/download.html)~~
+- ~~[lua-cjson](https://luarocks.org/modules/openresty/lua-cjson)~~
+
+### ~~Windows~~
+
+~~Install Lua and lua-cjson on Windows Subsystem for Linux.~~
