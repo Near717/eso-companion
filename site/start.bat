@@ -4,8 +4,7 @@ echo Starting ESO Companion
 
 REM Update data
 echo Updating data
-@REM call data\runconverter_lua.lnk
-call data\runconverter_py.lnk
+start "" pythonw "data\convertluatojson.py"
 
 REM Start file watcher
 echo Starting watchfile.ahk in a separate process

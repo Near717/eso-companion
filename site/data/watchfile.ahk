@@ -5,6 +5,14 @@
 Persistent
 TraySetIcon(A_WorkingDir . "\nexus.ico")
 
+; Try to find pythonw.exe in PATH
+pythonwPath := GetPythonwPath()
+if !FileExist(pythonwPath) {
+    MsgBox("Could not find pythonw.exe in PATH. Please install Python or add it to PATH.", "Error")
+    ExitApp
+}
+
+scriptPath := A_ScriptDir . "\convertluatojson.py"
 WatchedFile := A_MyDocuments . "\Elder Scrolls Online\live\SavedVariables\NearDailyInfo.lua"
 WatchedFolder := A_MyDocuments . "\Elder Scrolls Online\live\SavedVariables"
 If !FileExist(WatchedFolder) {
@@ -28,7 +36,7 @@ changed() {
 	if (enableSend)
 	{
 		Global enableSend := false
-		Run "runconverter_py"
+		Run('"' pythonwPath '" "' scriptPath '"', A_ScriptDir)
 	}
 	SetTimer toggle, 1000
 	return
@@ -37,4 +45,13 @@ changed() {
 toggle() {
 	Global enableSend := true
 	return
+}
+
+; Function to get full path to pythonw.exe using 'where' command
+GetPythonwPath() {
+    ; Run the 'where pythonw' command and capture output
+    shell := ComObject("WScript.Shell")
+    exec := shell.Exec("where pythonw")
+    path := exec.StdOut.ReadLine()
+    return path
 }
