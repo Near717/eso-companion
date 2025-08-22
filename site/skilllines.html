@@ -6,6 +6,7 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<link rel="stylesheet" href="assets/css/main.css" />
+	<link rel="stylesheet" href="assets/css/new.css" />
 	<link rel="icon" href="images/favicon.png" type="image/x-icon">
 </head>
 
@@ -29,8 +30,8 @@
 				<li><a href="endeavor.html">Endeavors</a></li>
 				<li><a href="riding.html">Riding Training</a></li>
 				<li><a href="rewards.html">Daily login rewards</a></li>
-				<li class="current"><a href="played.html">Play time</a></li>
-				<li><a href="skilllines.html">Skill Lines</a></li>
+				<li><a href="played.html">Play time</a></li>
+				<li class="current"><a href="skilllines.html">Skill Lines</a></li>
 			</ul>
 		</nav>
 
@@ -44,7 +45,7 @@
 							<!-- Content -->
 							<article class="box page-content">
 								<header>
-									<h2>Play time</h2>
+									<h2>Active Skill Lines</h2>
 								</header>
 								<section id="character-containers"></section>
 							</article>
@@ -90,28 +91,30 @@
 		fetch('data/output.json')
 			.then(response => response.json())
 			.then(jsonData => {
+				const classData = jsonData[server][userId][scope].classData;
 				const charInfo = jsonData[server][userId][scope].account.charInfo;
 				const char = jsonData[server][userId][scope].char;
 
-				function formatPlaytime(seconds) {
-					const minutes = seconds / 60;
-					const hours = seconds / 3600;
+				function formatSkillLines(activeSkillLines, charClassId) {
+					const names = activeSkillLines.map(id => {
+						for (const classId in classData.skillLines) {
+							if (classData.skillLines[classId][id.toString()]) {
+								if (classId == charClassId) {
+									return `<span class="skill-line" style="color: green;">${classData.skillLines[classId][id.toString()]}</span>`;
+								}
+								return `<span class="skill-line">${classData.skillLines[classId][id.toString()]}</span>`;
+							}
+						}
+					});
 
-					if (seconds < 60) {
-						return '1 minute';
-					} else if (seconds < 7200) {
-						return `${Math.round(minutes)} minutes`;
-					} else if (hours < 1000) {
-						return `${hours.toFixed(1)} hours`;
-					} else {
-						return `${Math.floor(hours)} hours`;
-					}
+					return names.join('<br>');
 				}
 
 				// Function to create container and labels
 				function createElements() {
 					// Loop through each character in charInfo
 					charInfo.forEach((character, charIndex) => {
+						const classId = charInfo[charIndex].classId
 						const charId = charInfo[charIndex].charId;
 						const charName = charInfo[charIndex].charName;
 						const charData = char[charId];
@@ -122,9 +125,9 @@
 
 						// Construct label text with progression information
 						let labelText;
-						if (charData.played) {
-							const played = formatPlaytime(charData.played);
-							labelText = `${charName}: ${played}`;
+						if (charData.activeSkillLines) {
+							const skillLines = formatSkillLines(charData.activeSkillLines, classId);
+							labelText = `${charName}:<br>${skillLines}`;
 						} else {
 							labelText = `<span style="color: red;">${charName}: NA</span>`;
 						}
