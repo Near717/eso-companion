@@ -32,7 +32,7 @@ local function UpdateClassNames()
 		local classId = GetClassIdByIndex(i)
 		local className = GetClassName(0, classId)
 
-		sv.name[classId] = className
+		sv.name[tostring(classId)] = className
 	end
 end
 
@@ -48,8 +48,8 @@ local function UpdateClassSkillLines()
 		local skillLineName = GetSkillLineNameById(skillLineId)
 		local classId = GetSkillLineClassId(skillType, skillLineIndex)
 
-		sv.skillLines[classId] = sv.skillLines[classId] or {}
-		table.insert(sv.skillLines[classId], skillLineId, skillLineName)
+		sv.skillLines[tostring(classId)] = sv.skillLines[tostring(classId)] or {}
+		sv.skillLines[tostring(classId)][tostring(skillLineId)] = skillLineName
 	end
 end
 
