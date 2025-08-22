@@ -10,4 +10,5 @@
 # All rights reserved.
 
 config.lua
+accountInfo.lua
 NearDailyInfo.lua

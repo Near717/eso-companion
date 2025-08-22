@@ -3,6 +3,7 @@ local addon = NEAR_DI
 
 local defaults = {
 	full = {
+		classData = {},
 		account = {
 			dailyReward = {},
 			endeavor = {
@@ -94,8 +95,8 @@ end
 local function updateCharList()
 	local sv = NEAR_DI.ASV.account
 	for i = 1, GetNumCharacters() do
-		local name, _, _, _, _, _, id, _ = GetCharacterInfo(i)
-		sv.charInfo[i] = { charId = id, charName = zo_strformat("<<1>>", name), }
+		local name, _, _, classId, _, _, id, _ = GetCharacterInfo(i)
+		sv.charInfo[i] = { charId = id, charName = zo_strformat("<<1>>", name), classId = classId }
 	end
 end
 
@@ -104,6 +105,9 @@ local function Init()
 	updateTimedActivityData()
 	updateRidingData()
 	updateCharList()
+
+	addon.accountInfo.UpdateClassData()
+	addon.accountInfo.Update()
 end
 
 local function InitRewards()
@@ -172,6 +176,7 @@ end
 local function OnLogOut()
 	local sv = NEAR_DI.ASV.char
 	sv.played = GetSecondsPlayed()
+	addon.accountInfo.Update()
 	updateLastUpdated(sv)
 end
 
@@ -184,6 +189,7 @@ local function OnAddonLoaded(event, name)
 
 	addon.ASV = {}
 	if GetDisplayName() == addon.config.mainDisplayName then
+		addon.ASV.classData = ZO_SavedVars:NewAccountWide(addon.name .. "_Data", 1, "classData", defaults.full.classData, GetWorldName())
 		addon.ASV.account = ZO_SavedVars:NewAccountWide(addon.name .. "_Data", 1, "account", defaults.full.account, GetWorldName())
 		addon.ASV.char = ZO_SavedVars:NewAccountWide(addon.name .. "_Data", 1, "char", defaults.full.char, GetWorldName())
 
