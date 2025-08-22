@@ -13,43 +13,10 @@
 	<div id="page-wrapper">
 
 		<!-- Header -->
-		<header id="header">
-			<div class="logo container">
-				<div>
-					<h1><a href="index.html" id="logo">ESO Companion</a></h1>
-					<p>Keeping track of dailies because bad memory</p>
-				</div>
-			</div>
-		</header>
+		<div id="header"></div>
 
 		<!-- Nav -->
-		<nav id="nav">
-			<ul>
-				<li class="current"><a href="index.html">Home</a></li>
-				<!-- <li>
-					<a href="#">Dropdown</a>
-					<ul>
-						<li><a href="#">Lorem ipsum dolor</a></li>
-						<li><a href="#">Magna phasellus</a></li>
-						<li>
-							<a href="#">Phasellus consequat</a>
-							<ul>
-								<li><a href="#">Lorem ipsum dolor</a></li>
-								<li><a href="#">Phasellus consequat</a></li>
-								<li><a href="#">Magna phasellus</a></li>
-								<li><a href="#">Etiam dolore nisl</a></li>
-							</ul>
-						</li>
-						<li><a href="#">Veroeros feugiat</a></li>
-					</ul>
-				</li> -->
-				<li><a href="endeavor.html">Endeavors</a></li>
-				<li><a href="riding.html">Riding Training</a></li>
-				<li><a href="rewards.html">Daily login rewards</a></li>
-				<li><a href="played.html">Play time</a></li>
-				<li><a href="skilllines.html">Skill Lines</a></li>
-			</ul>
-		</nav>
+		<div id="nav"></div>
 
 		<!-- Main -->
 		<section id="main">
@@ -103,17 +70,8 @@
 	</div>
 
 	<!-- Scripts -->
-	<script>
-		function loadContent() {
-			// Load footer
-			fetch('footer.html')
-				.then(response => response.text())
-				.then(data => {
-					document.getElementById('footer').innerHTML = data;
-				})
-				.catch(error => console.error('Error loading the footer:', error));
-		}
-
+	<script type="module">
+		import { loadContent } from './src/functions.js'
 		window.onload = loadContent;
 	</script>
 
