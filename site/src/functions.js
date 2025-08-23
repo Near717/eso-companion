@@ -130,7 +130,7 @@ export function createLastUpdated(element, format, data) {
 	const lastUpdatedElement = document.getElementById(element);
 	lastUpdatedElement.innerText = lastUpdatedText;
 	if (!isUpdated(data)) {
-		lastUpdatedElement.style.color = 'red';
+		lastUpdatedElement.classList.add('progress-0');
 	}
 }
 
@@ -156,27 +156,29 @@ export function buildEndeavor(jsonData) {
 	// Daily endeavors
 	const dailyEndeavors = data.endeavor.daily;
 	const dailyCompleteCount = dailyEndeavors.filter(endeavor => endeavor.complete).length;
+
 	if (isUpdated(data)) {
 		const dailyLabelText = dailyCompleteCount === 3 ? 'Complete' : `${dailyCompleteCount}/3`;
-		const dailyLabelColor = dailyCompleteCount === 3 ? 'progress-3' : `progress-${dailyCompleteCount}`;
-		createLabel(`Daily Endeavors: <span class="${dailyLabelColor}">${dailyLabelText}</span>`);
+		const dailyLabelClass = 
+			dailyCompleteCount === 3 ? 'progress-100' :
+			dailyCompleteCount === 2 ? 'progress-75' :
+			dailyCompleteCount === 1 ? 'progress-50' : 'progress-0';
+
+		createLabel(`Daily Endeavors: <span class="${dailyLabelClass}">${dailyLabelText}</span>`);
 	} else {
-		const dailyLabelText = '0/3';
-		const dailyLabelColor = 'progress-0';
-		createLabel(`Daily Endeavors: <span class="${dailyLabelColor}">${dailyLabelText}</span>`);
+		createLabel(`Daily Endeavors: <span class="progress-0">0/3</span>`);
 	}
 
 	// Weekly endeavors
 	const weeklyEndeavors = data.endeavor.weekly;
 	const weeklyComplete = weeklyEndeavors.some(endeavor => endeavor.complete);
+
 	if (isUpdated(data, true)) {
 		const weeklyLabelText = weeklyComplete ? 'Complete' : 'Incomplete';
-		const weeklyLabelColor = weeklyComplete ? 'progress-3' : 'progress-0';
+		const weeklyLabelColor = weeklyComplete ? 'progress-100' : 'progress-0';
 		createLabel(`Weekly Endeavors: <span class="${weeklyLabelColor}">${weeklyLabelText}</span>`);
 	} else {
-		const weeklyLabelText = 'Incomplete';
-		const weeklyLabelColor = 'progress-0';
-		createLabel(`Weekly Endeavors: <span class="${weeklyLabelColor}">${weeklyLabelText}</span>`);
+		createLabel(`Weekly Endeavors: <span class="progress-0">Incomplete</span>`);
 	}
 }
 
@@ -185,6 +187,8 @@ export function buildRiding(jsonData) {
 	const char = jsonData[server][userId][scope].char;
 
 	let allComplete = true;
+	const ridingContainer = document.getElementById('riding_container');
+	ridingContainer.innerHTML = '';
 
 	charInfo.forEach((character) => {
 		const charId = character.charId;
@@ -194,10 +198,10 @@ export function buildRiding(jsonData) {
 
 		if (!updated && charData.riding !== '-') {
 			const label = document.createElement('label');
-			label.textContent = `${charName}`;
-			label.style.color = 'red';
-			document.getElementById('riding_container').appendChild(label);
-			document.getElementById('riding_container').appendChild(document.createElement('br'));
+			label.textContent = charName;
+			label.classList.add('progress-0');
+			ridingContainer.appendChild(label);
+			ridingContainer.appendChild(document.createElement('br'));
 			allComplete = false;
 		}
 	});
@@ -205,9 +209,9 @@ export function buildRiding(jsonData) {
 	if (allComplete) {
 		const label = document.createElement('label');
 		label.textContent = 'Complete';
-		label.style.color = 'green';
-		document.getElementById('riding_container').appendChild(label);
-		document.getElementById('riding_container').appendChild(document.createElement('br'));
+		label.classList.add('progress-100');
+		ridingContainer.appendChild(label);
+		ridingContainer.appendChild(document.createElement('br'));
 	}
 }
 
@@ -225,20 +229,22 @@ export function buildRewards(jsonData) {
 
 		const label = document.createElement('label');
 		label.textContent = `${id}`;
-		label.style.color = (!updated || !claimed) ? 'red' : 'green';
+		if (!updated || !claimed) {
+			label.classList.add('progress-0');
+			allClaimed = false;
+		} else {
+			label.classList.add('progress-100');
+		}
+
 		rewardsContainer.appendChild(label);
 		rewardsContainer.appendChild(document.createElement('br'));
-
-		if (!updated || !claimed) {
-			allClaimed = false;
-		}
 	});
 
 	if (allClaimed) {
 		rewardsContainer.innerHTML = '';
 		const label = document.createElement('label');
 		label.textContent = 'Complete';
-		label.style.color = 'green';
+		label.classList.add('progress-100');
 		rewardsContainer.appendChild(label);
 		rewardsContainer.appendChild(document.createElement('br'));
 	}

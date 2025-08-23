@@ -7,66 +7,66 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<link rel="stylesheet" href="assets/css/main.css" />
 	<link rel="icon" href="images/favicon.png" type="image/x-icon">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 
 <body class="homepage is-preload">
 	<div id="page-wrapper">
 
 		<!-- Header -->
-		<div id="header"></div>
+		<header id="header"></header>
 
 		<!-- Nav -->
-		<div id="nav"></div>
+		<nav id="nav"></nav>
 
 		<!-- Main -->
 		<section id="main">
 			<div class="container">
 				<div class="row gtr-200">
-					<div class="col-12">
-
+					<div class="col-0">
 						<!-- Features -->
 						<section class="box features">
 							<h2 class="major"><span>Dailies</span></h2>
 							<div class="row">
-
-								<div class="col-4 col-6-medium col-12-small">
+		
+								<div class="col-4">
 									<!-- Feature: Endeavors -->
 									<section class="box feature">
 										<div id="endeavor_container">
 											<h3><a href="endeavor.html">Endeavors</a></h3>
 											<ul class="meta">
-												<li class="icon fa-clock" id="last_updated_endeavor"></li>
+												<i class="fa-regular fa-clock"></i>
+												<li id="last_updated_endeavor"></li>
 											</ul>
 										</div>
 									</section>
 								</div>
-
-								<div class="col-4 col-6-medium col-12-small">
+		
+								<div class="col-4">
 									<!-- Feature: Riding Training -->
 									<section class="box feature">
 										<h3><a href="riding.html">Riding Training</a></h3>
 										<div id="riding_container"></div>
 									</section>
 								</div>
-
-								<div class="col-4 col-6-medium col-12-small">
+		
+								<div class="col-4">
 									<!-- Feature: Daily login rewards -->
 									<section class="box feature">
 										<h3><a href="rewards.html">Daily login rewards</a></h3>
 										<div id="rewards_container"></div>
 									</section>
 								</div>
-
+		
 							</div>
 						</section>
-
 					</div>
 				</div>
 			</div>
 		</section>
 
 		<!-- Footer -->
-		<div id="footer"></div>
+		<footer id="footer"></footer>
 	</div>
 
 	<!-- Scripts -->
@@ -74,32 +74,6 @@
 		import { loadContent } from './src/functions.js'
 		window.onload = loadContent;
 	</script>
-
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/jquery.dropotron.min.js"></script>
-	<script src="assets/js/jquery.scrolly.min.js"></script>
-	<script src="assets/js/browser.min.js"></script>
-	<script src="assets/js/breakpoints.min.js"></script>
-	<script src="assets/js/util.js"></script>
-	<script src="assets/js/main.js"></script>
-
-	<style>
-		.progress-3 {
-			color: green;
-		}
-
-		.progress-2 {
-			color: yellow;
-		}
-
-		.progress-1 {
-			color: orange;
-		}
-
-		.progress-0 {
-			color: red;
-		}
-	</style>
 
 	<script type="module">
 		import { buildEndeavor, buildRiding, buildRewards } from './src/functions.js';
