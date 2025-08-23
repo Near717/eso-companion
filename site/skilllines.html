@@ -63,9 +63,9 @@
 						for (const classId in classData.skillLines) {
 							if (classData.skillLines[classId][id.toString()]) {
 								if (classId == charClassId) {
-									return `<span class="skill-line" style="color: green;">${classData.skillLines[classId][id.toString()]}</span>`;
+									return `<span class="skill-line own">${classData.skillLines[classId][id.toString()]}</span>`;
 								}
-								return `<span class="skill-line">${classData.skillLines[classId][id.toString()]}</span>`;
+								return `<span class="skill-line subclass">${classData.skillLines[classId][id.toString()]}</span>`;
 							}
 						}
 					});

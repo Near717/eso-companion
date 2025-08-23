@@ -344,6 +344,14 @@ p {
 		margin-left: 2em;
 	}
 
+	.skill-line.own {
+		color: green;
+	}
+
+	.skill-line.subclass {
+		color: #cc9
+	}
+
 /* Colors */
 	.progress-100 {
 		color: green;
