@@ -42,7 +42,7 @@
 
 	<!-- Scripts -->
 	<script type="module">
-		import { loadContent } from './src/functions.js'
+		import { loadContent } from './src/functions.js';
 		window.onload = loadContent;
 	</script>
 
@@ -84,26 +84,32 @@
 						const container = document.createElement('div');
 						container.classList.add(`char-${charIndex}`);
 
-						// Construct label text with progression information
-						let labelText;
-						if (charData.played) {
-							const played = formatPlaytime(charData.played);
-							labelText = `${charName}: ${played}`;
-						} else {
-							labelText = `<span style="color: red;">${charName}: NA</span>`;
-						}
+						// Icon
+						const icon = document.createElement('i');
+						icon.classList.add('fa-regular');
+						icon.classList.add('fa-clock');
 
-						let time = formatTimestamp("%m/%d %H:%M", charData.lastUpdated)
-
-						// Append last updated information to label text
-						labelText = `(Updated: ${time}) ${labelText}`;
+						// Label for character last update
+						const label = document.createElement('label');
+						let time = formatTimestamp("%y/%m/%d %H:%M", charData.lastUpdated);
+						label.innerText = ` ${time} | ${charName}: `;
 
 						// Label for character progression
-						const label = document.createElement('label');
-						label.innerHTML = labelText;
+						const result = document.createElement('label');
+						result.classList.add('result');
 
+						// Construct label text with progression information
+						if (charData.played) {
+							const played = formatPlaytime(charData.played);
+							result.innerText = `${played}`;
+						} else {
+							result.innerText = `NA`;
+							result.classList.add('na');
+						}
+
+						container.appendChild(icon);
 						container.appendChild(label);
-						container.appendChild(document.createElement('br'));
+						container.appendChild(result);
 
 						document.getElementById('character-containers').appendChild(container);
 					});

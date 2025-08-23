@@ -71,7 +71,7 @@
 
 	<!-- Scripts -->
 	<script type="module">
-		import { loadContent } from './src/functions.js'
+		import { loadContent } from './src/functions.js';
 		window.onload = loadContent;
 	</script>
 
@@ -83,9 +83,9 @@
 			.then(response => response.json())
 			.then(jsonData => {
 
-				buildEndeavor(jsonData)
-				buildRiding(jsonData)
-				buildRewards(jsonData)
+				buildEndeavor(jsonData);
+				buildRiding(jsonData);
+				buildRewards(jsonData);
 
 			})
 			.catch(error => console.error(error));

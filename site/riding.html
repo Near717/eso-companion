@@ -42,7 +42,7 @@
 
 	<!-- Scripts -->
 	<script type="module">
-		import { loadContent } from './src/functions.js'
+		import { loadContent } from './src/functions.js';
 		window.onload = loadContent;
 	</script>
 
@@ -69,30 +69,34 @@
 						const container = document.createElement('div');
 						container.classList.add(`char-${charIndex}`);
 
-						// Label for character progression
+						// Icon
+						const icon = document.createElement('i');
+						icon.classList.add('fa-regular');
+						icon.classList.add('fa-clock');
+
+						// Label for character last update
 						const label = document.createElement('label');
+						let time = formatTimestamp("%y/%m/%d %H:%M", charData.lastUpdated);
+						label.innerText = ` ${time} | ${charName}: `;
+						
+						// Label for character progression
+						const result = document.createElement('label');
 
 						// Construct label text with progression information
-						let labelText;
 						if (charData.riding === '-') {
-							labelText = `${charName}: Complete`
-							label.classList.add('complete')
+							result.innerText = `-`;
+							result.classList.add('complete');
 						} else if (isUpdated(charData) && charData.riding === 'done') {
-							labelText = `${charName}: ${charData.riding}`;
+							result.innerText = `done`;
+							result.classList.add('result');
 						} else {
-							labelText = `<span style="color: red;">${charName}: not done</span>`;
+							result.innerText = `not done`;
+							result.classList.add('progress-0');
 						}
 
-						let time = formatTimestamp("%m/%d %H:%M", charData.lastUpdated)
-
-						// Append last updated information to label text
-						labelText = `(Updated: ${time}) ${labelText}`;
-						label.innerText = labelText;
-
-						if (charData.riding)
-
+						container.appendChild(icon);
 						container.appendChild(label);
-						container.appendChild(document.createElement('br'));
+						container.appendChild(result);
 
 						document.getElementById('character-containers').appendChild(container);
 					});

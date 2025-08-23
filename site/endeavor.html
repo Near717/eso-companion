@@ -57,7 +57,7 @@
 
 	<!-- Scripts -->
 	<script type="module">
-		import { loadContent } from './src/functions.js'
+		import { loadContent } from './src/functions.js';
 		window.onload = loadContent;
 	</script>
 
@@ -90,8 +90,8 @@
 						label.classList.add('progress-0');
 					}
 				} else {
-					label.innerText = endeavor.name + ' (stale)';
-					label.classList.add('stale')
+					label.innerText = endeavor.name;
+					label.classList.add('stale');
 				}
 
 				container.appendChild(label);
@@ -104,11 +104,11 @@
 			.then(response => response.json())
 			.then(jsonData => {
 				// const data = jsonData.data.account
-				const data = jsonData[server][userId][scope].account
+				const data = jsonData[server][userId][scope].account;
 
-				const format = '%m/%d %H:%M'
-				const element = 'last_updated'
-				createLastUpdated(element, format, data)
+				const format = '%y/%m/%d %H:%M';
+				const element = 'last_updated';
+				createLastUpdated(element, format, data);
 
 				// Get the daily and weekly endeavors from the JSON data
 				const dailyEndeavors = data.endeavor.daily;

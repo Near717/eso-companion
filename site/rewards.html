@@ -42,7 +42,7 @@
 
 	<!-- Scripts -->
 	<script type="module">
-		import { loadContent } from './src/functions.js'
+		import { loadContent } from './src/functions.js';
 		window.onload = loadContent;
 	</script>
 
@@ -67,25 +67,31 @@
 						const container = document.createElement('div');
 						container.classList.add(`account-${accountIndex}`);
 
-						// Construct label text with progression information
-						let labelText;
-						if (isUpdated(accountData) && claimed) {
-							labelText = `${id}: claimed`;
-						} else {
-							labelText = `<span style="color: red;">${id}: not claimed</span>`;
-						}
+						// Icon
+						const icon = document.createElement('i');
+						icon.classList.add('fa-regular');
+						icon.classList.add('fa-clock');
 
-						let time = formatTimestamp("%m/%d %H:%M", accountData.lastUpdated)
-
-						// Append last updated information to label text
-						labelText = `(Updated: ${time}) ${labelText}`;
+						// Label for account last update
+						const label = document.createElement('label');
+						let time = formatTimestamp("%y/%m/%d %H:%M", accountData.lastUpdated);
+						label.innerText = ` ${time} | ${id}: `;
 
 						// Label for account progression
-						const label = document.createElement('label');
-						label.innerHTML = labelText;
+						const result = document.createElement('label');
 
+						// Construct label text with progression information
+						if (isUpdated(accountData) && claimed) {
+							result.innerText = `claimed`;
+							result.classList.add('result');
+						} else {
+							result.innerText = `not claimed`;
+							result.classList.add('progress-0');
+						}
+
+						container.appendChild(icon);
 						container.appendChild(label);
-						container.appendChild(document.createElement('br'));
+						container.appendChild(result);
 
 						// Append container to the section
 						document.getElementById('account-containers').appendChild(container);
