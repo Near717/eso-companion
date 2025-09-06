@@ -129,8 +129,9 @@ export function createLastUpdated(element, format, data) {
 
 	const lastUpdatedElement = document.getElementById(element);
 	lastUpdatedElement.innerText = lastUpdatedText;
+	
 	if (!isUpdated(data)) {
-		lastUpdatedElement.classList.add('progress-0');
+		lastUpdatedElement.classList.add('result', 'stale');
 	}
 }
 
@@ -146,9 +147,16 @@ export function buildEndeavor(jsonData) {
 
 	const endeavorContainer = document.getElementById('endeavor_container');
 
-	function createLabel(text) {
+	function createLabel(type, progress, progressClass) {
+		const title = type === 1 ? 'Daily Endeavors: ' : 'Weekly Endeavors: '
 		const label = document.createElement('label');
-		label.innerHTML = text;
+		label.innerText = title;
+
+		const span = document.createElement('span');
+		span.innerText = progress;
+		span.classList.add('result', progressClass);
+
+		label.appendChild(span);
 		endeavorContainer.appendChild(label);
 		endeavorContainer.appendChild(document.createElement('br'));
 	}
@@ -163,10 +171,9 @@ export function buildEndeavor(jsonData) {
 			dailyCompleteCount === 3 ? 'progress-100' :
 			dailyCompleteCount === 2 ? 'progress-75' :
 			dailyCompleteCount === 1 ? 'progress-50' : 'progress-0';
-
-		createLabel(`Daily Endeavors: <span class="${dailyLabelClass}">${dailyLabelText}</span>`);
+		createLabel(1, dailyLabelText, dailyLabelClass);
 	} else {
-		createLabel(`Daily Endeavors: <span class="progress-0">0/3</span>`);
+		createLabel(1, '0/3', 'stale');
 	}
 
 	// Weekly endeavors
@@ -176,9 +183,9 @@ export function buildEndeavor(jsonData) {
 	if (isUpdated(data, true)) {
 		const weeklyLabelText = weeklyComplete ? 'Complete' : 'Incomplete';
 		const weeklyLabelColor = weeklyComplete ? 'progress-100' : 'progress-0';
-		createLabel(`Weekly Endeavors: <span class="${weeklyLabelColor}">${weeklyLabelText}</span>`);
+		createLabel(2, weeklyLabelText, weeklyLabelColor);
 	} else {
-		createLabel(`Weekly Endeavors: <span class="progress-0">Incomplete</span>`);
+		createLabel(2, 'Incomplete', 'stale');
 	}
 }
 
@@ -198,8 +205,8 @@ export function buildRiding(jsonData) {
 
 		if (!updated && charData.riding !== '-') {
 			const label = document.createElement('label');
-			label.textContent = charName;
-			label.classList.add('progress-0');
+			label.innerText = charName;
+			label.classList.add('result', 'progress-0');
 			ridingContainer.appendChild(label);
 			ridingContainer.appendChild(document.createElement('br'));
 			allComplete = false;
@@ -208,8 +215,8 @@ export function buildRiding(jsonData) {
 
 	if (allComplete) {
 		const label = document.createElement('label');
-		label.textContent = 'Complete';
-		label.classList.add('progress-100');
+		label.innerText = 'Complete';
+		label.classList.add('result', 'complete');
 		ridingContainer.appendChild(label);
 		ridingContainer.appendChild(document.createElement('br'));
 	}
@@ -228,12 +235,14 @@ export function buildRewards(jsonData) {
 		const updated = isUpdated(accountData);
 
 		const label = document.createElement('label');
-		label.textContent = `${id}`;
+		label.innerText = `${id}`;
+		label.classList.add('result', 'login');
+
 		if (!updated || !claimed) {
-			label.classList.add('progress-0');
+			label.classList.add('incomplete');
 			allClaimed = false;
 		} else {
-			label.classList.add('progress-100');
+			label.classList.add('complete');
 		}
 
 		rewardsContainer.appendChild(label);
@@ -244,7 +253,7 @@ export function buildRewards(jsonData) {
 		rewardsContainer.innerHTML = '';
 		const label = document.createElement('label');
 		label.textContent = 'Complete';
-		label.classList.add('progress-100');
+		label.classList.add('result', 'complete');
 		rewardsContainer.appendChild(label);
 		rewardsContainer.appendChild(document.createElement('br'));
 	}

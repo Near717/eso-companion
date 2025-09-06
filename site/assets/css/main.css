@@ -337,35 +337,13 @@ p {
 		color: #c5c29e
 	}
 
-/* Colors */
-	.progress-100 {
-		color: green;
+/* Timestamp */
+	.timestamp {
+		font-size: 0.85em;
+		color: #a8a8a8;
 	}
 
-	.progress-75 {
-		color: rgb(200, 200, 0);
-	}
-
-	.progress-50 {
-		color: rgb(200, 165, 0);
-	}
-
-	.progress-0 {
-		color: rgb(200, 0, 0);
-	}
-
-	.complete {
-		color:#777;
-		font-style: italic;
-	}
-
-	.stale {
-		color: #b55;
-		opacity: 0.8;
-		font-style: italic;
-		text-decoration: line-through;
-	}
-
+/* Results */
 	.result {
 		color: #c5c29e;
 	}
@@ -374,4 +352,44 @@ p {
 		color: #b55;
 		opacity: 0.8;
 	}
-	
+
+	.result.progress-100 {
+		color: green;
+	}
+
+	.result.progress-75 {
+		color: rgb(200, 200, 0);
+	}
+
+	.result.progress-50 {
+		color: rgb(200, 165, 0);
+	}
+
+	.result.progress-0 {
+		color: rgb(200, 0, 0);
+	}
+
+	.result.complete {
+		color:#777;
+		font-style: italic;
+	}
+
+	.result.incomplete {
+		color: rgb(200, 0, 0);
+	}
+
+	.result.stale {
+		color: #b55;
+		opacity: 0.8;
+		font-style: italic;
+		text-decoration: line-through;
+	}
+
+	.result.login.complete {
+		color: #777;
+		font-style: normal;
+	}
+
+	.result.login.incomplete {
+		color: #c5c29e
+	}

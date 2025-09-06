@@ -74,6 +74,7 @@
 				if (isUpdated(data, weekly)) {
 					// Construct label text with progression information
 					const progressionText = `${endeavor.name} (${endeavor.progress}/${endeavor.maxProgress})`;
+					label.classList.add('result')
 					label.innerText = progressionText;
 
 					// Calculate progress percentage

@@ -69,27 +69,33 @@
 
 						// Icon
 						const icon = document.createElement('i');
-						icon.classList.add('fa-regular');
-						icon.classList.add('fa-clock');
+						icon.classList.add('timestamp', 'fa-regular', 'fa-clock');
 
-						// Label for account last update
-						const label = document.createElement('label');
+						// Label for last update
+						const timestamp = document.createElement('label');
+						timestamp.classList.add('timestamp');
 						let time = formatTimestamp("%y/%m/%d %H:%M", accountData.lastUpdated);
-						label.innerText = ` ${time} | ${id}: `;
+						timestamp.innerText = ` ${time} | `;
+
+						// Label for account
+						const label = document.createElement('label');
+						label.innerText = `${id}: `;
 
 						// Label for account progression
 						const result = document.createElement('label');
+						result.classList.add('result', 'login')
 
 						// Construct label text with progression information
 						if (isUpdated(accountData) && claimed) {
 							result.innerText = `claimed`;
-							result.classList.add('progress-100');
+							result.classList.add('complete');
 						} else {
 							result.innerText = `not claimed`;
-							result.classList.add('progress-0');
+							result.classList.add('incomplete')
 						}
 
 						container.appendChild(icon);
+						container.appendChild(timestamp);
 						container.appendChild(label);
 						container.appendChild(result);
 

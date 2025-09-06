@@ -86,13 +86,17 @@
 
 						// Icon
 						const icon = document.createElement('i');
-						icon.classList.add('fa-regular');
-						icon.classList.add('fa-clock');
+						icon.classList.add('timestamp', 'fa-regular', 'fa-clock');
 
-						// Label for character last update
-						const label = document.createElement('label');
+						// Label for last update
+						const timestamp = document.createElement('label');
+						timestamp.classList.add('timestamp')
 						let time = formatTimestamp("%y/%m/%d %H:%M", charData.lastUpdated);
-						label.innerText = ` ${time} | ${charName}: `;
+						timestamp.innerText = ` ${time} | `;
+
+						// Label for character
+						const label = document.createElement('label');
+						label.innerText = `${charName}: `;
 
 						// Label for character progression
 						const result = document.createElement('label');
@@ -108,6 +112,7 @@
 						}
 
 						container.appendChild(icon);
+						container.appendChild(timestamp);
 						container.appendChild(label);
 						container.appendChild(result);
 
