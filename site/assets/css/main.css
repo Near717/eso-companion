@@ -91,7 +91,6 @@ p {
 
 /* Navigation */
 	#nav {
-		position: fixed;
 		top: 0;
 		left: 0;
 		z-index: 1000;
@@ -114,6 +113,7 @@ p {
 	#nav li {
 		display: inline-block;
 		position: relative;
+		padding-left: 0;
 		margin: 0 0.5em 0 0.5em;
 		top: 0;
 	}
@@ -127,36 +127,21 @@ p {
 		position: relative;
 		color: #777;
 		text-decoration: none;
-		top: -6px;
-		padding: 6px 1.5em 0.25em 1.5em;
-		border-bottom-left-radius: 6px;
-		border-bottom-right-radius: 6px;
+		padding: 0 1.5em 0 1.5em;
 		outline: 0;
 	}
 
-	#nav li:hover, #nav li.active {
-		top: 3px;
-	}
-
 	#nav li:hover a, #nav li:hover span {
-		background: #cacaca;
-		color: black;
-	}
-
-	#nav li.active a, #nav li.active span {
-		background: #cacaca;
-		color: black;
+		color: #c5c29e;
 	}
 
 	#nav li.current > a {
-		background: #dbdbdb;
-		color: black;
+		color: white;
 	}
 
 /* Header */
 	#header {
 		font-size: 1.8em;
-		padding: 1.5em;
 		background: #333;
 		margin: 0 auto;
 		text-align: center;
