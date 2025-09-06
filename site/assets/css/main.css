@@ -349,7 +349,7 @@ p {
 	}
 
 	.skill-line.subclass {
-		color: #cc9
+		color: #c5c29e
 	}
 
 /* Colors */
@@ -382,10 +382,11 @@ p {
 	}
 
 	.result {
-		color: #555;
+		color: #c5c29e;
 	}
 
 	.result.na {
 		color: #b55;
 		opacity: 0.8;
 	}
+	
