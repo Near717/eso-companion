@@ -1,46 +1,5 @@
 import { server, userId, scope } from './config.js';
 
-/**
- * Add navigation, header and footer to page
- */
-export function loadContent() {
-	// Load nav
-	fetch('assets/html/navigation.html')
-		.then(response => response.text())
-		.then(data => {
-			const navContainer = document.getElementById('nav');
-			navContainer.innerHTML = data;
-
-			// highlight current page
-			const currentPage = window.location.pathname.split("/").pop();
-			const navLinks = navContainer.querySelectorAll("a");
-
-			navLinks.forEach(link => {
-				if (link.getAttribute("href") === currentPage) {
-					link.parentElement.classList.add("current");
-				}
-			});
-		})
-		.catch(error => console.error('Error loading the navigation:', error));
-
-
-	// Load header
-	fetch('assets/html/header.html')
-		.then(response => response.text())
-		.then(data => {
-			document.getElementById('header').innerHTML = data;
-		})
-		.catch(error => console.error('Error loading the footer:', error));
-
-	// Load footer
-	fetch('assets/html/footer.html')
-		.then(response => response.text())
-		.then(data => {
-			document.getElementById('footer').innerHTML = data;
-		})
-		.catch(error => console.error('Error loading the footer:', error));
-}
-
 /* Helper Functions */
 
 /**
@@ -130,9 +89,9 @@ export function createLastUpdated(element, format, data) {
 	const lastUpdatedElement = document.getElementById(element);
 	lastUpdatedElement.innerText = lastUpdatedText;
 	
-	if (!isUpdated(data)) {
-		lastUpdatedElement.classList.add('result', 'stale');
-	}
+	// if (!isUpdated(data)) {
+	// 	lastUpdatedElement.classList.add('result', 'stale');
+	// }
 }
 
 

@@ -29,10 +29,8 @@
 
 						<header>
 							<h2>Endeavor tracker</h2>
-							<ul class="meta">
-								<i class="fa-regular fa-clock"></i>
-								<li id="last_updated"></li>
-							</ul>
+							<i class="timestamp fa-regular fa-clock"></i>
+							<label class="timestamp" id="last_updated"></label>
 						</header>
 
 						<section>
@@ -57,7 +55,7 @@
 
 	<!-- Scripts -->
 	<script type="module">
-		import { loadContent } from './src/functions.js';
+		import { loadContent } from './assets/js/layout.js';
 		window.onload = loadContent;
 	</script>
 
@@ -70,11 +68,11 @@
 			// Loop through the endeavors and create labels
 			endeavors.forEach((endeavor) => {
 				const label = document.createElement('label');
+				label.classList.add('result')
 
 				if (isUpdated(data, weekly)) {
 					// Construct label text with progression information
 					const progressionText = `${endeavor.name} (${endeavor.progress}/${endeavor.maxProgress})`;
-					label.classList.add('result')
 					label.innerText = progressionText;
 
 					// Calculate progress percentage

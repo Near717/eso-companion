@@ -34,10 +34,9 @@
 									<section class="box feature">
 										<div id="endeavor_container">
 											<h3><a href="endeavor.html">Endeavors</a></h3>
-											<ul class="meta">
-												<i class="fa-regular fa-clock"></i>
-												<li id="last_updated_endeavor"></li>
-											</ul>
+											<i class="timestamp fa-regular fa-clock"></i>
+											<label class="timestamp" id="last_updated_endeavor"></label>
+											<br>
 										</div>
 									</section>
 								</div>
@@ -71,7 +70,7 @@
 
 	<!-- Scripts -->
 	<script type="module">
-		import { loadContent } from './src/functions.js';
+		import { loadContent } from './assets/js/layout.js';
 		window.onload = loadContent;
 	</script>
 
