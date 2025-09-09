@@ -22,16 +22,15 @@
 		<!-- Main -->
 		<section id="main">
 			<div class="container">
-				<div class="content">
-
-					<!-- Content -->
-					<article class="box page-content">
-						<header>
-							<h2>Active Skill Lines</h2>
-						</header>
-						<section id="character-containers"></section>
-					</article>
-
+				<div class="row gtr-200">
+					<div class="col-0">
+						<section class="box features">
+							<header>
+								<h2>Active Skill Lines</h2>
+							</header>
+							<div class="row" id="character-containers"></div>
+						</section>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -84,7 +83,8 @@
 
 						// Container to hold the character's data
 						const container = document.createElement('div');
-						container.classList.add(`char-${charIndex}`);
+						container.classList.add(`col-4`);
+						container.id = `char-${charIndex}`;
 
 						// Icon
 						const icon = document.createElement('i');

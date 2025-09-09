@@ -84,12 +84,12 @@ p {
 	margin-bottom: 1em;
 }
 
-/* Mobile */
-	@media (max-width: 953px) {
-		h2.major {
-			margin: 0 0 1em 0;
-		}
+/* Narrow */
+@media (max-width: 953px) {
+	h2.major {
+		margin: 0 0 1em 0;
 	}
+}
 
 /* Page wrapper */
 	#page-wrapper > section {
@@ -155,7 +155,7 @@ p {
 		color: white;
 	}
 
-	/* Mobile */
+	/* Narrow */
 	@media (max-width: 953px) {
 		#nav ul.nav-links {
 			display: none;
@@ -283,7 +283,7 @@ p {
 			margin-bottom: 0;
 		}
 
-	/* Mobile */
+	/* Narrow */
 	@media (max-width: 953px) {
 		section, article {
 			margin-bottom: 2em;
@@ -345,7 +345,7 @@ p {
 		padding: 0 100px 0 100px;
 	}
 	
-	/* Mobile */
+	/* Narrow */
 	@media (max-width: 953px) {
 		.box.page-content {
 			padding: 0 1.5em 0 1.5em;
@@ -368,33 +368,77 @@ p {
 		width: 100%;
 	}
 
-	.row > .col-1 {
-		width: 8.33333%;
-	}
-
 	.row > .col-2 {
-		width: 16.66667%;
+		width: 50%;
 	}
 
 	.row > .col-3 {
-		width: 25%;
-	}
-
-	.row > .col-4 {
 		width: 33.33333%;
 	}
 
-	.row.gtr-200 {
-		padding: 0 100px 0 100px;
+	.row > .col-4 {
+		width: 25%;
 	}
 
-	/* Mobile */
+	.row > .col-5 {
+		width: 16.66667%;
+	}
+
+	.row > .col-6 {
+		width: 8.33333%;
+	}
+	
+	.row.gtr-200 {
+		padding: 0 4em;
+	}
+	
+	/* 1440 */
+	@media (max-width: 1440px) {
+		.row > .col-4 {
+			width: 33.33333%;
+		}
+	
+		.row > .col-5 {
+			width: 25%;
+		}
+	
+		.row > .col-6 {
+			width: 16.66667%;
+		}
+	}
+
+	/* Narrow */
+	@media (max-width: 1100px) {
+		.row > .col-0 {
+			width: 100%;
+		}
+
+		.row > .col-4 {
+			width: 50%;
+		}
+
+		.row > .col-5 {
+			width: 33.33333%;
+		}
+
+		.row > .col-6 {
+			width: 25%;
+		}
+	}
+
 	@media (max-width: 953px) {
 		.row {
 			display: contents;
 		}
 
-		.row > .col-4 {
+		.row > .col-0 {
+			padding: 0 2em;
+		}
+
+		.row > .col-5,
+		.row > .col-4,
+		.row > .col-3,
+		.row > .col-2 {
 			width: 100%;
 			padding-bottom: 2em;
 		}
@@ -468,4 +512,12 @@ p {
 
 	.result.login.incomplete {
 		color: #c5c29e
+	}
+
+	/* Mobile */
+	@media (max-width: 468px) {
+		.result:not(.box.feature *) {
+			display: block;
+			width: 100%;
+		}
 	}
