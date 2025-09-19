@@ -11,6 +11,6 @@ echo Starting watchfile.ahk in a separate process
 start "" "data\watchfile.ahk"
 
 REM Start live-server
-call live-server --no-browser --ignore='README.MD,.bat'
+call live-server --no-browser --ignore='README.MD,.bat,.\node_modules'
 
 pause
