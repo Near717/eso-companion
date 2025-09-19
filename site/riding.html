@@ -7,55 +7,36 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<link rel="stylesheet" href="assets/css/main.css" />
 	<link rel="icon" href="images/favicon.png" type="image/x-icon">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 
 <body class="is-preload">
 	<div id="page-wrapper">
+		<nav id="nav"></nav>
+		<header id="header"></header>
 
-		<!-- Header -->
-		<div id="header"></div>
-
-		<!-- Nav -->
-		<div id="nav"></div>
-
-		<!-- Main -->
 		<section id="main">
 			<div class="container">
-				<div class="row">
-					<div class="col-12">
-						<div class="content">
+				<div class="content">
 
-							<!-- Content -->
-							<article class="box page-content">
-								<header>
-									<h2>Riding training</h2>
-								</header>
-								<section id="character-containers"></section>
-							</article>
+					<article class="box page-content">
+						<header>
+							<h2>Riding training</h2>
+						</header>
+						<section id="character-containers"></section>
+					</article>
 
-						</div>
-					</div>
 				</div>
 			</div>
 		</section>
 
-		<!-- Footer -->
-		<div id="footer"></div>
+		<footer id="footer"></footer>
 	</div>
 
-	<!-- Scripts -->
 	<script type="module">
-		import { loadContent } from './src/functions.js'
+		import { loadContent } from './assets/js/layout.js';
 		window.onload = loadContent;
 	</script>
-
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/jquery.dropotron.min.js"></script>
-	<script src="assets/js/jquery.scrolly.min.js"></script>
-	<script src="assets/js/browser.min.js"></script>
-	<script src="assets/js/breakpoints.min.js"></script>
-	<script src="assets/js/util.js"></script>
-	<script src="assets/js/main.js"></script>
 
 	<script type="module">
 		import { isUpdated, formatTimestamp } from './src/functions.js';
@@ -80,25 +61,39 @@
 						const container = document.createElement('div');
 						container.classList.add(`char-${charIndex}`);
 
+						// Icon
+						const icon = document.createElement('i');
+						icon.classList.add('timestamp', 'fa-regular', 'fa-clock');
+
+						// Label for last update
+						const timestamp = document.createElement('label');
+						timestamp.classList.add('timestamp');
+						let time = formatTimestamp("%y/%m/%d %H:%M", charData.lastUpdated);
+						timestamp.innerText = ` ${time} | `;
+
+						// Label for character
+						const label = document.createElement('label');
+						label.innerText = `${charName}: `;
+						
+						// Label for character progression
+						const result = document.createElement('label');
+						result.classList.add('result');
+
 						// Construct label text with progression information
-						let labelText;
-						if (isUpdated(charData) && charData.riding === 'done' || charData.riding === '-') {
-							labelText = `${charName}: ${charData.riding}`;
+						if (charData.riding === '-') {
+							result.innerText = `-`;
+							result.classList.add('complete');
+						} else if (isUpdated(charData) && charData.riding === 'done') {
+							result.innerText = `done`;
+							result.classList.add('progress-100');
 						} else {
-							labelText = `<span style="color: red;">${charName}: not done</span>`;
+							result.innerText = `not done`;
 						}
 
-						let time = formatTimestamp("%m/%d %H:%M", charData.lastUpdated)
-
-						// Append last updated information to label text
-						labelText = `(Updated: ${time}) ${labelText}`;
-
-						// Label for character progression
-						const label = document.createElement('label');
-						label.innerHTML = labelText;
-
+						container.appendChild(icon);
+						container.appendChild(timestamp);
 						container.appendChild(label);
-						container.appendChild(document.createElement('br'));
+						container.appendChild(result);
 
 						document.getElementById('character-containers').appendChild(container);
 					});

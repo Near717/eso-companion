@@ -1,46 +1,5 @@
 import { server, userId, scope } from './config.js';
 
-/**
- * Add navigation, header and footer to page
- */
-export function loadContent() {
-	// Load nav
-	fetch('assets/html/navigation.html')
-		.then(response => response.text())
-		.then(data => {
-			const navContainer = document.getElementById('nav');
-			navContainer.innerHTML = data;
-
-			// highlight current page
-			const currentPage = window.location.pathname.split("/").pop();
-			const navLinks = navContainer.querySelectorAll("a");
-
-			navLinks.forEach(link => {
-				if (link.getAttribute("href") === currentPage) {
-					link.parentElement.classList.add("current");
-				}
-			});
-		})
-		.catch(error => console.error('Error loading the navigation:', error));
-
-
-	// Load header
-	fetch('assets/html/header.html')
-		.then(response => response.text())
-		.then(data => {
-			document.getElementById('header').innerHTML = data;
-		})
-		.catch(error => console.error('Error loading the footer:', error));
-
-	// Load footer
-	fetch('assets/html/footer.html')
-		.then(response => response.text())
-		.then(data => {
-			document.getElementById('footer').innerHTML = data;
-		})
-		.catch(error => console.error('Error loading the footer:', error));
-}
-
 /* Helper Functions */
 
 /**
@@ -129,9 +88,10 @@ export function createLastUpdated(element, format, data) {
 
 	const lastUpdatedElement = document.getElementById(element);
 	lastUpdatedElement.innerText = lastUpdatedText;
-	if (!isUpdated(data)) {
-		lastUpdatedElement.style.color = 'red';
-	}
+	
+	// if (!isUpdated(data)) {
+	// 	lastUpdatedElement.classList.add('result', 'stale');
+	// }
 }
 
 
@@ -146,9 +106,16 @@ export function buildEndeavor(jsonData) {
 
 	const endeavorContainer = document.getElementById('endeavor_container');
 
-	function createLabel(text) {
+	function createLabel(type, progress, progressClass) {
+		const title = type === 1 ? 'Daily Endeavors: ' : 'Weekly Endeavors: '
 		const label = document.createElement('label');
-		label.innerHTML = text;
+		label.innerText = title;
+
+		const span = document.createElement('span');
+		span.innerText = progress;
+		span.classList.add('result', progressClass);
+
+		label.appendChild(span);
 		endeavorContainer.appendChild(label);
 		endeavorContainer.appendChild(document.createElement('br'));
 	}
@@ -156,27 +123,28 @@ export function buildEndeavor(jsonData) {
 	// Daily endeavors
 	const dailyEndeavors = data.endeavor.daily;
 	const dailyCompleteCount = dailyEndeavors.filter(endeavor => endeavor.complete).length;
+
 	if (isUpdated(data)) {
 		const dailyLabelText = dailyCompleteCount === 3 ? 'Complete' : `${dailyCompleteCount}/3`;
-		const dailyLabelColor = dailyCompleteCount === 3 ? 'progress-3' : `progress-${dailyCompleteCount}`;
-		createLabel(`Daily Endeavors: <span class="${dailyLabelColor}">${dailyLabelText}</span>`);
+		const dailyLabelClass = 
+			dailyCompleteCount === 3 ? 'progress-100' :
+			dailyCompleteCount === 2 ? 'progress-75' :
+			dailyCompleteCount === 1 ? 'progress-50' : 'progress-0';
+		createLabel(1, dailyLabelText, dailyLabelClass);
 	} else {
-		const dailyLabelText = '0/3';
-		const dailyLabelColor = 'progress-0';
-		createLabel(`Daily Endeavors: <span class="${dailyLabelColor}">${dailyLabelText}</span>`);
+		createLabel(1, '0/3', 'stale');
 	}
 
 	// Weekly endeavors
 	const weeklyEndeavors = data.endeavor.weekly;
 	const weeklyComplete = weeklyEndeavors.some(endeavor => endeavor.complete);
+
 	if (isUpdated(data, true)) {
 		const weeklyLabelText = weeklyComplete ? 'Complete' : 'Incomplete';
-		const weeklyLabelColor = weeklyComplete ? 'progress-3' : 'progress-0';
-		createLabel(`Weekly Endeavors: <span class="${weeklyLabelColor}">${weeklyLabelText}</span>`);
+		const weeklyLabelColor = weeklyComplete ? 'progress-100' : 'progress-0';
+		createLabel(2, weeklyLabelText, weeklyLabelColor);
 	} else {
-		const weeklyLabelText = 'Incomplete';
-		const weeklyLabelColor = 'progress-0';
-		createLabel(`Weekly Endeavors: <span class="${weeklyLabelColor}">${weeklyLabelText}</span>`);
+		createLabel(2, 'Incomplete', 'stale');
 	}
 }
 
@@ -185,6 +153,8 @@ export function buildRiding(jsonData) {
 	const char = jsonData[server][userId][scope].char;
 
 	let allComplete = true;
+	const ridingContainer = document.getElementById('riding_container');
+	ridingContainer.innerHTML = '';
 
 	charInfo.forEach((character) => {
 		const charId = character.charId;
@@ -194,20 +164,20 @@ export function buildRiding(jsonData) {
 
 		if (!updated && charData.riding !== '-') {
 			const label = document.createElement('label');
-			label.textContent = `${charName}`;
-			label.style.color = 'red';
-			document.getElementById('riding_container').appendChild(label);
-			document.getElementById('riding_container').appendChild(document.createElement('br'));
+			label.innerText = charName;
+			label.classList.add('result', 'progress-0');
+			ridingContainer.appendChild(label);
+			ridingContainer.appendChild(document.createElement('br'));
 			allComplete = false;
 		}
 	});
 
 	if (allComplete) {
 		const label = document.createElement('label');
-		label.textContent = 'Complete';
-		label.style.color = 'green';
-		document.getElementById('riding_container').appendChild(label);
-		document.getElementById('riding_container').appendChild(document.createElement('br'));
+		label.innerText = 'Complete';
+		label.classList.add('result', 'complete');
+		ridingContainer.appendChild(label);
+		ridingContainer.appendChild(document.createElement('br'));
 	}
 }
 
@@ -224,21 +194,25 @@ export function buildRewards(jsonData) {
 		const updated = isUpdated(accountData);
 
 		const label = document.createElement('label');
-		label.textContent = `${id}`;
-		label.style.color = (!updated || !claimed) ? 'red' : 'green';
-		rewardsContainer.appendChild(label);
-		rewardsContainer.appendChild(document.createElement('br'));
+		label.innerText = `${id}`;
+		label.classList.add('result', 'login');
 
 		if (!updated || !claimed) {
+			label.classList.add('incomplete');
 			allClaimed = false;
+		} else {
+			label.classList.add('complete');
 		}
+
+		rewardsContainer.appendChild(label);
+		rewardsContainer.appendChild(document.createElement('br'));
 	});
 
 	if (allClaimed) {
 		rewardsContainer.innerHTML = '';
 		const label = document.createElement('label');
 		label.textContent = 'Complete';
-		label.style.color = 'green';
+		label.classList.add('result', 'complete');
 		rewardsContainer.appendChild(label);
 		rewardsContainer.appendChild(document.createElement('br'));
 	}
